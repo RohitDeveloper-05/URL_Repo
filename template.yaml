@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  new-url-shortener-rohit
+
+  Sample SAM Template for new-url-shortener-rohit
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 150
+    Environment:
+      Variables:
+        TABLE_NAME: latest-url-rohit
+        BASE_URL: rohit-base-url
+    LoggingConfig:
+      LogFormat: JSON
+Resources:
+  TabUrlRohit:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: latest-url-rohit
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  RohURL:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: app.Handler
+      Runtime: nodejs22.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabUrlRohit
+      Events:
+        RedirectUrlApi:
+          Type: Api
+          Properties:
+            Path: /{shortCode}
+            Method: get
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - app.ts
+        External: # ← exclude these from the bundle
+          - "@aws-sdk/client-dynamodb"
+          - "@aws-sdk/lib-dynamodb"
+
+Outputs:
+  getShortUrlApi:
+    Description: API Gateway endpoint URL for Prod stage for Shorten URL function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+  RohURL:
+    Description: Shorten URL Lambda Function ARN
+    Value: !GetAtt RohURL.Arn
+  ShortenUrlFunctionIamRole:
+    Description: Implicit IAM Role created for Shorten URL function
+    Value: !GetAtt RohURLRole.Arn

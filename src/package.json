@@ -1,0 +1,41 @@
+{
+    "name": "hello_world",
+    "version": "1.0.0",
+    "description": "hello world sample for NodeJS",
+    "main": "app.js",
+    "repository": "https://github.com/awslabs/aws-sam-cli/tree/develop/samcli/local/init/templates/cookiecutter-aws-sam-hello-nodejs",
+    "author": "SAM CLI",
+    "license": "MIT",
+    "scripts": {
+        "unit": "jest",
+        "lint": "eslint '*.ts' --quiet --fix",
+        "compile": "tsc",
+        "test": "jest --passWithNoTests",
+        "test:watch": "jest --watch",
+        "coverage:serve": "npx live-server coverage/lcov-report --port=9000 --quiet"
+    },
+    "dependencies": {
+        "esbuild": "^0.14.14",
+        "joi": "^17.13.3",
+        "nanoid": "^5.1.5"
+    },
+    "devDependencies": {
+        "@aws-sdk/client-dynamodb": "^3.799.0",
+        "@aws-sdk/lib-dynamodb": "^3.799.0",
+        "@jest/globals": "^29.2.0",
+        "@types/aws-lambda": "^8.10.92",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^20.5.7",
+        "@typescript-eslint/eslint-plugin": "^5.10.2",
+        "@typescript-eslint/parser": "^5.10.2",
+        "aws-sdk-client-mock": "^4.1.0",
+        "eslint": "^8.8.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "jest": "^29.7.0",
+        "prettier": "^2.5.1",
+        "ts-jest": "^29.3.2",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.8.4"
+    }
+}
