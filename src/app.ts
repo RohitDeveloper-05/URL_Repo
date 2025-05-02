@@ -71,12 +71,17 @@ export const Handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         return formatResponse(
             {
                 uselessURL: `${BASE_URL}/short/${id}`,
-                shortUrl: `https://${requestContext?.domainName}/${requestContext?.stage.toLowerCase()}/${id}`,
+                shortUrl: `https://${requestContext?.domainName}/${
+                    requestContext?.stage.charAt(0).toUpperCase() + requestContext?.stage.slice(1)
+                }/${id}`,
             },
             201,
         );
     } else if (httpMethod === 'GET') {
         const id = event.pathParameters?.shortCode;
+        if (!id) {
+            return formatError('Not found', 404);
+        }
 
         try {
             const result = await ddbDocClient.send(
